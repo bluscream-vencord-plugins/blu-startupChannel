@@ -1,37 +1,36 @@
+//// Plugin originally written for Equicord at 2026-02-16 by https://github.com/Bluscream, https://antigravity.google
+// region Imports
+import { Logger } from "@utils/Logger";
+import definePlugin from "@utils/types";
+import {
+    ChannelRouter,
+    ChannelStore,
+    NavigationRouter,
+    SelectedChannelStore,
+    Toasts
+} from "@webpack/common";
+
+import { settings } from "./settings";
+// endregion Imports
+
+// region PluginInfo
 export const pluginInfo = {
     id: "startupChannel",
     name: "StartupChannel",
     description: "Automatically opens and scrolls to a specific channel when Discord starts",
-    color: "#5865F2"
+    color: "#5865F2",
+    authors: [
+        { name: "Bluscream", id: 467777925790564352n },
+        { name: "Assistant", id: 0n }
+    ],
 };
+// endregion PluginInfo
 
-// Created at 2026-01-01 06:26:37
-import { definePluginSettings } from "@api/Settings";
-import { Logger } from "@utils/Logger";
-import definePlugin, { OptionType } from "@utils/types";
-import { ChannelRouter, ChannelStore, NavigationRouter, SelectedChannelStore, Toasts } from "@webpack/common";
+// region Variables
+const logger = new Logger(pluginInfo.id, pluginInfo.color);
+// endregion Variables
 
-const logger = new Logger(pluginInfo.name, pluginInfo.color);
-
-export const settings = definePluginSettings({
-    channelId: {
-        type: OptionType.STRING,
-        description: "Channel ID to open on startup (leave empty to disable)",
-        placeholder: "123456789012345678",
-        default: ""
-    },
-    scrollToBottom: {
-        type: OptionType.BOOLEAN,
-        description: "Automatically scroll to bottom of channel after opening",
-        default: true
-    },
-    enabled: {
-        type: OptionType.BOOLEAN,
-        description: "Enable automatic channel opening on startup",
-        default: true
-    }
-});
-
+// region Utils
 function scrollChannelToBottom() {
     // Wait a bit for the channel to load, then scroll to bottom
     setTimeout(() => {
@@ -91,14 +90,13 @@ async function openStartupChannel() {
         });
     }
 }
+// endregion Utils
 
+// region Definition
 export default definePlugin({
-    name: "StartupChannel",
-    description: "Automatically opens and scrolls to a specific channel when Discord starts",
-    authors: [
-        { name: "Bluscream", id: 467777925790564352n },
-        { name: "Cursor.AI", id: 0n }
-    ],
+    name: pluginInfo.name,
+    description: pluginInfo.description,
+    authors: pluginInfo.authors,
     settings,
 
     flux: {
@@ -120,3 +118,4 @@ export default definePlugin({
         }
     }
 });
+// endregion Definition
